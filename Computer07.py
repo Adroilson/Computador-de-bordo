@@ -1,5 +1,6 @@
 ########################################## Interface do projeto de Circuitos 2, Industria 4.0 ##################################################
 # Criado em 02/08/2019, Atualizado em 21/11/2019 por Denilson Santos
+# Projeto disponível em https://github.com/Adroilson/Computador-de-bordo
 #
 #
 # ################ Esse codigo pode ser usado apenas para fins educacionais, por conta e risco de quem usar, ###################################
@@ -7,8 +8,20 @@
 # ################ antes de tentar aplicar qualquer metodo no seu programa.                                  ###################################
 #
 # 
-# Integrantes da equipe: Denilson Santos
-
+# Integrantes da equipe: 
+# Aquimedes 
+# Aroldo Kmita
+# Danilo Gomes
+# Denilson Santos
+# Gildásio Chagas
+# João Marco
+# Paloma Viana
+# Sayonara Viana
+# 
+# Professora: Patricia Lins. https://patricialins.org/
+#
+# Curso: Engenharia Elétrica, disciplina Circuitos 2
+#
 #   Materiais utilizados projeto industria 4.0
 #   
 #   Sensor de temperatura DS18B20 (EF52) Configurado como W1 (conexão one wire)
