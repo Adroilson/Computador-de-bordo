@@ -9,7 +9,7 @@
 #
 # 
 # Integrantes da equipe: 
-# Aquimedes 
+# Aquimedes Guedes
 # Aroldo Kmita
 # Danilo Gomes
 # Denilson Santos
