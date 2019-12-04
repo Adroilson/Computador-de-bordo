@@ -62,6 +62,7 @@ try:
     GPIO.setmode(GPIO.BCM) # # As portas serão nomeadas coforme numeração GPIO
     RELAIS_1_GPIO = 27
     GPIO.setup(RELAIS_1_GPIO, GPIO.OUT) # Designa modo da porta GPIO
+    GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # Deve iniciar desligado
 
 except:
     pass
@@ -90,7 +91,7 @@ HEIGHT = 600
 FPS = 120
 
 # Buffer de dados, esse dicionario armazena todos os dados usados na interface 
-buffer = {"temp": 40,                # Temperatura 
+buffer = {"temp": 0,                # Temperatura 
     "tela":'painel_mini',           # 'temperatura' ou 'painel_real' ou 'painel_mini'
     "modo":"n",                     # mudar para 'teste' se quiser testar sem a interface grafica.
     "motor": False,                 # Motor ligado ou desligado
@@ -98,8 +99,8 @@ buffer = {"temp": 40,                # Temperatura
     "resfria":False,                # Estado do sistema de resfriamento
     "escala_temp":(0,100),          # maximo e minimo  para escalas de temperatura
     "escala_RPM" : (0,13000),       # maximo e minimo  para escalas de RPM
-    "escala_velocidade" : (0,900),  # maximo e minimo  para escalas de velocidade
-    "escala_resfriamento" : (80,50),# maximo e minimo do controle de temperatura, a 80 ativa, a 50 desativa
+    "escala_velocidade" : (0,240),  # maximo e minimo  para escalas de velocidade
+    "escala_resfriamento" : (65,50),# maximo e minimo do controle de temperatura, a 80 ativa, a 50 desativa
     "RPM":0,                        # RPM
     "aux_tela": 0,                  # auxilia na mudança de telas  
     "velocidade": 0}                # Velocidade
@@ -259,7 +260,8 @@ class Figura(pygame.sprite.Sprite):
 ################################### Funções Auxiliares #######################################
         
 def calcula_velocidade():
-    V = ((2*math.pi*(buffer["RPM"]/60))*0.16)*3.6
+    """Considerando a rotação de um eixo de 5cm """
+    V = 2*math.pi*(buffer["RPM"]*60*5*10**-5)
     buffer['velocidade'] = V
 
 def draw_text(text, size, color, x, y):
@@ -337,14 +339,12 @@ def resfria():
     if buffer['modo'] == 'teste':
         pass
     else:
-        if buffer['temp'] < buffer['escala_resfriamento'][0]:
-            GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # off
-            buffer['resfria'] = False
-        if buffer['temp'] > buffer['escala_resfriamento'][1]:
-            GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # on
-            buffer['resfria'] = True
-
-
+        if buffer['temp'] > buffer['escala_resfriamento'][0]:
+            GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # on
+            buffer["resfria"] = True
+        if buffer['temp'] < buffer['escala_resfriamento'][1] and buffer["resfria"] == True:
+            GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # off
+            buffer["resfria"] = False
 
 #######################################################################################################
 ################################ Função de Limite de rotação #########################################
@@ -459,9 +459,7 @@ while running:
                     buffer["speed"] = 0
                     pi.set_servo_pulsewidth(ESC, buffer["speed"])
                     buffer['motor'] = False
-
-
-
+                    
     # Update
     if buffer['modo'] == 'teste':
         pass
