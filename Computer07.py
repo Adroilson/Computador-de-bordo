@@ -62,7 +62,7 @@ try:
     GPIO.setmode(GPIO.BCM) # # As portas serão nomeadas coforme numeração GPIO
     RELAIS_1_GPIO = 27
     GPIO.setup(RELAIS_1_GPIO, GPIO.OUT) # Designa modo da porta GPIO
-    GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # Deve iniciar desligado
+    GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # Deve iniciar desligado
 
 except:
     pass
@@ -99,7 +99,7 @@ buffer = {"temp": 0,                # Temperatura
     "resfria":False,                # Estado do sistema de resfriamento
     "escala_temp":(0,100),          # maximo e minimo  para escalas de temperatura
     "escala_RPM" : (0,13000),       # maximo e minimo  para escalas de RPM
-    "escala_velocidade" : (0,240),  # maximo e minimo  para escalas de velocidade
+    "escala_velocidade" : (0,220),  # maximo e minimo  para escalas de velocidade
     "escala_resfriamento" : (65,50),# maximo e minimo do controle de temperatura, a 80 ativa, a 50 desativa
     "RPM":0,                        # RPM
     "aux_tela": 0,                  # auxilia na mudança de telas  
@@ -340,10 +340,10 @@ def resfria():
         pass
     else:
         if buffer['temp'] > buffer['escala_resfriamento'][0]:
-            GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # on
+            GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # on
             buffer["resfria"] = True
         if buffer['temp'] < buffer['escala_resfriamento'][1] and buffer["resfria"] == True:
-            GPIO.output(RELAIS_1_GPIO, GPIO.LOW) # off
+            GPIO.output(RELAIS_1_GPIO, GPIO.HIGH) # off
             buffer["resfria"] = False
 
 #######################################################################################################
